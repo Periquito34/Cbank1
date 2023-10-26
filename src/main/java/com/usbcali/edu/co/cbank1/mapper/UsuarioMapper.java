@@ -35,5 +35,4 @@ public class UsuarioMapper {
         return usuarios.stream().map(UsuarioMapper::domainToDto).toList();
     }
 
-
 }

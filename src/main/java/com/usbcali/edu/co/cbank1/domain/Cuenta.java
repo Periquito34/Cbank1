@@ -27,7 +27,7 @@ public class Cuenta {
     @Column(nullable = false, length = 30, name="pin")
     private int pin;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario", nullable = false)
     private Usuario usuario;
 

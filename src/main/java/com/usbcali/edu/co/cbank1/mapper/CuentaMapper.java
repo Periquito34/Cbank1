@@ -1,7 +1,6 @@
 package com.usbcali.edu.co.cbank1.mapper;
 
 import com.usbcali.edu.co.cbank1.domain.Cuenta;
-import com.usbcali.edu.co.cbank1.dto.BolsilloDTO;
 import com.usbcali.edu.co.cbank1.dto.CuentaDTO;
 
 import java.util.List;
@@ -23,6 +22,7 @@ public class CuentaMapper {
                 .saldo(cuenta.getSaldo())
                 .pin(cuenta.getPin())
                 .telefono(cuenta.getTelefono())
+                .usuarioId(cuenta.getUsuario().getId() == null ? null : cuenta.getUsuario().getId())
                 .build();
     }
 
@@ -30,7 +30,7 @@ public class CuentaMapper {
         return cuentaDTOS.stream().map(CuentaMapper::dtoToDomain).toList();
     }
 
-    public List<CuentaDTO> domainToDtoList(List<Cuenta> cuentas) {
+    public static List<CuentaDTO> domainToDtoList(List<Cuenta> cuentas) {
         return cuentas.stream().map(CuentaMapper::domainToDto).toList();
     }
 }
