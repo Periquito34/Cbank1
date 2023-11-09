@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -14,15 +16,12 @@ public class TransferenciaDTO {
 
     private Integer id;
 
-    private String fecha;
+    private Integer cuentaOrigen;
 
-    private int cuentaOrigen;
-
-    private int cuentaDestino;
-
-    private Integer cuentaId;
+    private Integer cuentaDestino;
 
     private float monto;
 
-    private String num_destinatario;
+    private String fecha;
+
 }

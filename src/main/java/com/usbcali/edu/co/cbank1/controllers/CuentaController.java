@@ -43,4 +43,15 @@ public class CuentaController {
         CuentaDTO cuentaDTO = CuentaMapper.domainToDto(cuenta);
         return new ResponseEntity<>(cuentaDTO, HttpStatus.OK);
     }
+
+    @GetMapping("/obtenerIdPorTelefono/{telefono}")
+    public ResponseEntity<Integer> obtenerIdCuentaPorTelefono(@PathVariable String telefono) {
+        try {
+            Integer idCuenta = cuentaService.obtenerIdCuentaPorTelefono(telefono);
+            return ResponseEntity.ok(idCuenta);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
 }

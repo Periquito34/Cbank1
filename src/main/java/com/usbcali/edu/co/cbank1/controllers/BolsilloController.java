@@ -5,12 +5,10 @@ import com.usbcali.edu.co.cbank1.domain.Bolsillo;
 import com.usbcali.edu.co.cbank1.dto.BolsilloDTO;
 import com.usbcali.edu.co.cbank1.mapper.BolsilloMapper;
 import com.usbcali.edu.co.cbank1.repository.BolsilloRepository;
+import com.usbcali.edu.co.cbank1.service.BolsilloService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,14 +18,21 @@ public class BolsilloController {
 
     private final BolsilloRepository bolsilloRepository;
 
-    public BolsilloController(BolsilloRepository bolsilloRepository) {
+    private final BolsilloService bolsilloService;
+
+    public BolsilloController(BolsilloRepository bolsilloRepository, BolsilloService bolsilloService) {
         this.bolsilloRepository = bolsilloRepository;
+        this.bolsilloService = bolsilloService;
     }
 
+    @PostMapping("/guardarBolsillo")
+    public ResponseEntity<BolsilloDTO> guardarBolsillo(@RequestBody BolsilloDTO bolsilloDTO) throws Exception{
+        BolsilloDTO bolsilloDTO1 = bolsilloService.guardarNuevoBolsillo(bolsilloDTO);
+        return new ResponseEntity<>(bolsilloDTO1, HttpStatus.OK);
+    }
     @GetMapping("/obtenerTodos")
-    public List<Bolsillo> obtenerTodos() {
-        List<Bolsillo> bolsillos = bolsilloRepository.findAll();
-        return bolsillos;
+    public ResponseEntity<List<BolsilloDTO>> buscarTodosLosBolsillos() {
+        return new ResponseEntity<>(bolsilloService.buscarTodosLosBolsillos(), HttpStatus.OK);
     }
 
     @GetMapping("/porId/{id}")

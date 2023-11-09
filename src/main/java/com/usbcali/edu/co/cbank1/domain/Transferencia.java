@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -21,23 +23,19 @@ public class Transferencia {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false, length = 30, name="fecha_transferencia")
-    private String fecha_transferencia;
-
-    @Column(nullable = false, length = 30, name="id_cuenta_origen")
-    private int id_cuentaorigen;
-
-    @Column(nullable = false, length = 30, name="id_cuenta_destino")
-    private int id_cuentadestino;
+    @ManyToOne
+    @JoinColumn(name = "id_cuenta_origen", referencedColumnName = "id_cuenta", nullable = false)
+    private Cuenta cuentaOrigen;
 
     @ManyToOne
-    @JoinColumn(name = "id_cuenta", referencedColumnName = "id_cuenta", nullable = false)
-    private Cuenta cuenta;
+    @JoinColumn(name = "id_cuenta_destino", referencedColumnName = "id_cuenta", nullable = false)
+    private Cuenta cuentaDestino;
+
 
     @Column(nullable = false, length = 30, name="monto")
     private float monto;
 
-    @Column(nullable = false, length = 30, name="num_destinatario")
-    private String num_destinatario;
+    @Column(nullable = false, length = 30, name="fecha_transferencia")
+    private String fecha;
 
 }

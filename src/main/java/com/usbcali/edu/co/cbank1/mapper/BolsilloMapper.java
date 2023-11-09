@@ -20,6 +20,7 @@ public class BolsilloMapper {
                 .id(bolsillo.getId())
                 .dinero(bolsillo.getDinero())
                 .nombreBolsillo(bolsillo.getNombreBolsillo())
+                .cuentaId(bolsillo.getCuenta().getId() == null ? null : bolsillo.getCuenta().getId())
                 .build();
     }
 
@@ -27,7 +28,7 @@ public class BolsilloMapper {
         return bolsilloDTOS.stream().map(BolsilloMapper::dtoToDomain).toList();
     }
 
-    public List<BolsilloDTO> domainToDtoList(List<Bolsillo> bolsillos) {
+    public static List<BolsilloDTO> domainToDtoList(List<Bolsillo> bolsillos) {
         return bolsillos.stream().map(BolsilloMapper::domainToDto).toList();
     }
 }

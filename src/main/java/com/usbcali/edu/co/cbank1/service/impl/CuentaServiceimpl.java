@@ -78,4 +78,54 @@ public class CuentaServiceimpl implements CuentaService {
     public List<CuentaDTO> buscartodaslascuentas(){
         return CuentaMapper.domainToDtoList(cuentaRepository.findAll());
     }
+
+    private List<Cuenta> cuentas; // Supongamos que cuentas es una lista de objetos Cuenta
+
+    @Override
+    public CuentaDTO obtenerCuentaPorId(Integer id) throws Exception {
+        Optional<Cuenta> cuentaOptional = cuentaRepository.findById(id);
+
+        if (cuentaOptional.isPresent()) {
+            Cuenta cuenta = cuentaOptional.get();
+            return CuentaMapper.domainToDto(cuenta);
+        } else {
+            throw new Exception("No se encontró ninguna cuenta con el ID especificado.");
+        }
+    }
+
+
+    @Override
+    public CuentaDTO actualizarCuenta(CuentaDTO cuentaDTO) throws Exception {
+        // Validar que la cuentaDTO no sea nula y que tenga un ID válido
+        if (cuentaDTO == null || cuentaDTO.getId() == null) {
+            throw new Exception("La cuenta no puede ser nula y debe tener un ID válido.");
+        }
+
+        // Verificar si la cuenta existe en la base de datos
+        Optional<Cuenta> cuentaOptional = cuentaRepository.findById(cuentaDTO.getId());
+
+        if (cuentaOptional.isPresent()) {
+            // Actualizar la información de la cuenta con los datos de cuentaDTO
+            Cuenta cuenta = cuentaOptional.get();
+            cuenta.setSaldo(cuentaDTO.getSaldo());  // Actualiza el saldo u otros campos según necesites
+
+            // Guardar la cuenta actualizada en la base de datos
+            cuenta = cuentaRepository.save(cuenta);
+            return CuentaMapper.domainToDto(cuenta);
+        } else {
+            throw new Exception("No se encontró ninguna cuenta con el ID especificado.");
+        }
+    }
+
+    @Override
+    public Integer obtenerIdCuentaPorTelefono(String telefono) throws Exception {
+        Optional<Cuenta> cuentaOptional = cuentaRepository.findCuentaByTelefono(telefono);
+
+        if (cuentaOptional.isPresent()) {
+            Cuenta cuenta = cuentaOptional.get();
+            return cuenta.getId();
+        } else {
+            throw new Exception("No se encontró ninguna cuenta con el teléfono especificado.");
+        }
+    }
 }
