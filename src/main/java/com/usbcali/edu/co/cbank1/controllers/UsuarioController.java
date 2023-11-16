@@ -17,17 +17,15 @@ import java.util.List;
 @RequestMapping("/usuario")
 public class UsuarioController {
 
-    private final UsuarioRepository usuarioRepository;
     private final UsuarioService usuarioService;
 
-    public UsuarioController(UsuarioRepository usuarioRepository, UsuarioService usuarioService) {
+    public UsuarioController(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
-        this.usuarioRepository = usuarioRepository;
     }
 
     @GetMapping("/obtenerTodos")
-    public List<Usuario> obtenerTodos() {
-        List<Usuario> usuarios = usuarioRepository.findAll();
+    public List<UsuarioDTO> obtenerTodos() {
+        List<UsuarioDTO> usuarios = usuarioService.buscarTodos();
         return usuarios;
     }
 
@@ -39,8 +37,6 @@ public class UsuarioController {
 
     @GetMapping("/porId/{id}")
     public ResponseEntity<UsuarioDTO> buscarPorId(@PathVariable Integer id) throws Exception{
-        Usuario usuario = usuarioRepository.getReferenceById(id);
-        UsuarioDTO usuarioDTO = UsuarioMapper.domainToDto(usuario);
-        return new ResponseEntity<>(usuarioDTO, HttpStatus.OK);
+        return new ResponseEntity<>(usuarioService.obtenerUsuarioPorId(id), HttpStatus.OK);
     }
 }

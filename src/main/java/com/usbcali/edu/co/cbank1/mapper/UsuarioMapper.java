@@ -31,7 +31,7 @@ public class UsuarioMapper {
         return usuarioDTOS.stream().map(UsuarioMapper::dtoToDomain).toList();
     }
 
-    public List <UsuarioDTO> domainToDtoList(List<Usuario> usuarios){
+    public static List <UsuarioDTO> domainToDtoList(List<Usuario> usuarios){
         return usuarios.stream().map(UsuarioMapper::domainToDto).toList();
     }
 

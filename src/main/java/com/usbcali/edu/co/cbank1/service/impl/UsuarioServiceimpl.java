@@ -1,13 +1,17 @@
 package com.usbcali.edu.co.cbank1.service.impl;
 
 
+import com.usbcali.edu.co.cbank1.domain.Cuenta;
 import com.usbcali.edu.co.cbank1.domain.Usuario;
+import com.usbcali.edu.co.cbank1.dto.CuentaDTO;
 import com.usbcali.edu.co.cbank1.dto.UsuarioDTO;
+import com.usbcali.edu.co.cbank1.mapper.CuentaMapper;
 import com.usbcali.edu.co.cbank1.mapper.UsuarioMapper;
 import com.usbcali.edu.co.cbank1.repository.UsuarioRepository;
 import com.usbcali.edu.co.cbank1.service.UsuarioService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,6 +21,7 @@ public class UsuarioServiceimpl implements UsuarioService {
     public UsuarioServiceimpl(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
     }
+
 
     @Override
     public UsuarioDTO guardarNuevoUsuario(UsuarioDTO usuarioDTO) throws Exception {
@@ -69,5 +74,24 @@ public class UsuarioServiceimpl implements UsuarioService {
 
         usuarioDTO = UsuarioMapper.domainToDto(usuario);
         return usuarioDTO;
+    }
+
+    @Override
+    public List<UsuarioDTO> buscarTodos(){
+        return UsuarioMapper.domainToDtoList(usuarioRepository.findAll());
+    }
+    private List<Usuario> usuarios;
+
+
+    @Override
+    public UsuarioDTO obtenerUsuarioPorId(Integer id) throws Exception {
+        Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
+
+        if (usuarioOptional.isPresent()) {
+            Usuario usuario = usuarioOptional.get();
+            return UsuarioMapper.domainToDto(usuario);
+        } else {
+            throw new Exception("No se encontró ningún usuario con el ID especificado.");
+        }
     }
 }

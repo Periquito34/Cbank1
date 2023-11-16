@@ -8,6 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface BolsilloRepository extends JpaRepository<Bolsillo, Integer> {
-
     Optional<Bolsillo> findBolsilloByNombreBolsillo(String nombreBolsillo);
+
 }
