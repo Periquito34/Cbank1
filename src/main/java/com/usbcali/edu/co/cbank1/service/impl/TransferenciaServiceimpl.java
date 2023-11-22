@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TransferenciaServiceimpl implements TransferenciaService {
@@ -77,5 +78,11 @@ public class TransferenciaServiceimpl implements TransferenciaService {
     @Override
     public List<TransferenciaDTO> buscarTodasLasTransferencias() {
         return TransferenciaMapper.domainToDtoList(transferenciaRepository.findAll());
+    }
+
+    @Override
+    public List<TransferenciaDTO> obtenerHistorialDeTransferencias(Integer cuentaId) {
+        List<Transferencia> transferencias = transferenciaRepository.findByCuentaOrigenIdOrCuentaDestinoId(cuentaId, cuentaId);
+        return transferencias.stream().map(TransferenciaMapper::domainToDto).collect(Collectors.toList());
     }
 }

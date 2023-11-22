@@ -8,4 +8,7 @@ public interface TransferenciaService {
     TransferenciaDTO guardarTransferencia(TransferenciaDTO transferenciaDTO) throws Exception;
 
     List<TransferenciaDTO> buscarTodasLasTransferencias();
+
+    List<TransferenciaDTO> obtenerHistorialDeTransferencias(Integer cuentaId);
+
 }

@@ -3,8 +3,11 @@ package com.usbcali.edu.co.cbank1.controllers;
 
 import com.usbcali.edu.co.cbank1.domain.Cuenta;
 import com.usbcali.edu.co.cbank1.dto.CuentaDTO;
+import com.usbcali.edu.co.cbank1.dto.TransferenciaDTO;
 import com.usbcali.edu.co.cbank1.mapper.CuentaMapper;
 import com.usbcali.edu.co.cbank1.repository.CuentaRepository;
+import com.usbcali.edu.co.cbank1.requests.AgregarSaldoRequest;
+import com.usbcali.edu.co.cbank1.requests.VerificacionCuentaRequest;
 import com.usbcali.edu.co.cbank1.service.CuentaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,6 +54,28 @@ public class CuentaController {
             return ResponseEntity.ok(idCuenta);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @PostMapping("/verificarCuentaPorIdYPin")
+    public ResponseEntity<Boolean> verificarCuentaPorIdYPin(@RequestBody VerificacionCuentaRequest request) {
+        try {
+            boolean resultado = cuentaService.verificarCuentaPorIdYPin(request.getId(), request.getPin());
+            return ResponseEntity.ok(resultado);
+        } catch (Exception e) {
+            // Manejo de excepciones si es necesario
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PostMapping("/agregarSaldo/{idCuenta}")
+    public ResponseEntity<CuentaDTO> agregarSaldo(@PathVariable Integer idCuenta, @RequestBody AgregarSaldoRequest request) {
+        try {
+            CuentaDTO cuentaActualizada = cuentaService.agregarSaldo(idCuenta, request.getMonto());
+            return ResponseEntity.ok(cuentaActualizada);
+        } catch (Exception e) {
+            // Manejo de excepciones si es necesario
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 

@@ -2,10 +2,14 @@ package com.usbcali.edu.co.cbank1.service.impl;
 
 
 import com.usbcali.edu.co.cbank1.domain.Cuenta;
+import com.usbcali.edu.co.cbank1.domain.Transferencia;
 import com.usbcali.edu.co.cbank1.domain.Usuario;
 import com.usbcali.edu.co.cbank1.dto.CuentaDTO;
+import com.usbcali.edu.co.cbank1.dto.TransferenciaDTO;
 import com.usbcali.edu.co.cbank1.mapper.CuentaMapper;
+import com.usbcali.edu.co.cbank1.mapper.TransferenciaMapper;
 import com.usbcali.edu.co.cbank1.repository.CuentaRepository;
+import com.usbcali.edu.co.cbank1.repository.TransferenciaRepository;
 import com.usbcali.edu.co.cbank1.repository.UsuarioRepository;
 import com.usbcali.edu.co.cbank1.service.CuentaService;
 import org.springframework.stereotype.Service;
@@ -19,9 +23,12 @@ public class CuentaServiceimpl implements CuentaService {
     public final CuentaRepository cuentaRepository;
     public final UsuarioRepository usuarioRepository;
 
-    public CuentaServiceimpl(CuentaRepository cuentaRepository, UsuarioRepository usuarioRepository) {
+    private final TransferenciaRepository transferenciaRepository;
+
+    public CuentaServiceimpl(CuentaRepository cuentaRepository, UsuarioRepository usuarioRepository, TransferenciaRepository transferenciaRepository) {
         this.cuentaRepository = cuentaRepository;
         this.usuarioRepository = usuarioRepository;
+        this.transferenciaRepository = transferenciaRepository;
     }
 
     @Override
@@ -128,4 +135,37 @@ public class CuentaServiceimpl implements CuentaService {
             throw new Exception("No se encontró ninguna cuenta con el teléfono especificado.");
         }
     }
+
+    @Override
+    public boolean verificarCuentaPorIdYPin(Integer id, int pin) throws Exception {
+        Optional<Cuenta> cuentaOptional = cuentaRepository.findById(id);
+
+        if (cuentaOptional.isPresent()) {
+            Cuenta cuenta = cuentaOptional.get();
+            return cuenta.getPin() == pin;
+        } else {
+            throw new Exception("No se encontró ninguna cuenta con el ID especificado.");
+        }
+
+    }
+
+    @Override
+    public CuentaDTO agregarSaldo(Integer idCuenta, float monto) throws Exception {
+        Optional<Cuenta> cuentaOptional = cuentaRepository.findById(idCuenta);
+
+        if (cuentaOptional.isPresent()) {
+            Cuenta cuenta = cuentaOptional.get();
+            cuenta.setSaldo(cuenta.getSaldo() + monto);
+
+            // Guardar la cuenta actualizada en la base de datos
+            cuenta = cuentaRepository.save(cuenta);
+
+            return CuentaMapper.domainToDto(cuenta);
+        } else {
+            throw new Exception("No se encontró ninguna cuenta con el ID especificado.");
+        }
+
+    }
+
+
 }

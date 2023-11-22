@@ -70,4 +70,10 @@ public class TransferenciaController {
         return new ResponseEntity<>(transferenciaDTO, HttpStatus.OK);
     }
 
+    @GetMapping("/historialTransferencias/{cuentaId}")
+    public ResponseEntity<List<TransferenciaDTO>> obtenerHistorialDeTransferencias(@PathVariable Integer cuentaId) {
+        List<TransferenciaDTO> historial = transferenciaService.obtenerHistorialDeTransferencias(cuentaId);
+        return ResponseEntity.ok(historial);
+    }
+
 }
