@@ -91,4 +91,15 @@ public class CuentaController {
         }
     }
 
+    @GetMapping("/obtenerCuentaPorId/{idCuenta}")
+    public ResponseEntity<CuentaDTO> obtenerCuentaPorId(@PathVariable Integer idCuenta) {
+        try {
+            CuentaDTO cuentaDTO = cuentaService.obtenerCuentaPorId(idCuenta);
+            return ResponseEntity.ok(cuentaDTO);
+        } catch (Exception e) {
+            // Manejo de excepciones si es necesario
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 }
