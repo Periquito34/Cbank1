@@ -6,8 +6,10 @@ import com.usbcali.edu.co.cbank1.domain.Transferencia;
 import com.usbcali.edu.co.cbank1.domain.Usuario;
 import com.usbcali.edu.co.cbank1.dto.CuentaDTO;
 import com.usbcali.edu.co.cbank1.dto.TransferenciaDTO;
+import com.usbcali.edu.co.cbank1.dto.UsuarioDTO;
 import com.usbcali.edu.co.cbank1.mapper.CuentaMapper;
 import com.usbcali.edu.co.cbank1.mapper.TransferenciaMapper;
+import com.usbcali.edu.co.cbank1.mapper.UsuarioMapper;
 import com.usbcali.edu.co.cbank1.repository.CuentaRepository;
 import com.usbcali.edu.co.cbank1.repository.TransferenciaRepository;
 import com.usbcali.edu.co.cbank1.repository.UsuarioRepository;
@@ -165,6 +167,23 @@ public class CuentaServiceimpl implements CuentaService {
             throw new Exception("No se encontró ninguna cuenta con el ID especificado.");
         }
 
+    }
+
+    @Override
+    public UsuarioDTO obtenerUsuarioPorIdCuenta(Integer idCuenta) throws Exception {
+        Optional<Cuenta> cuentaOptional = cuentaRepository.findById(idCuenta);
+
+        if (cuentaOptional.isPresent()) {
+            Cuenta cuenta = cuentaOptional.get();
+            Usuario usuario = cuenta.getUsuario();
+
+            // Utiliza un Mapper o convierte el Usuario a UsuarioDTO según tu lógica
+            UsuarioDTO usuarioDTO = UsuarioMapper.domainToDto(usuario);
+
+            return usuarioDTO;
+        } else {
+            throw new Exception("No se encontró ninguna cuenta con el ID especificado.");
+        }
     }
 
 

@@ -4,6 +4,7 @@ package com.usbcali.edu.co.cbank1.controllers;
 import com.usbcali.edu.co.cbank1.domain.Cuenta;
 import com.usbcali.edu.co.cbank1.dto.CuentaDTO;
 import com.usbcali.edu.co.cbank1.dto.TransferenciaDTO;
+import com.usbcali.edu.co.cbank1.dto.UsuarioDTO;
 import com.usbcali.edu.co.cbank1.mapper.CuentaMapper;
 import com.usbcali.edu.co.cbank1.repository.CuentaRepository;
 import com.usbcali.edu.co.cbank1.requests.AgregarSaldoRequest;
@@ -73,6 +74,17 @@ public class CuentaController {
         try {
             CuentaDTO cuentaActualizada = cuentaService.agregarSaldo(idCuenta, request.getMonto());
             return ResponseEntity.ok(cuentaActualizada);
+        } catch (Exception e) {
+            // Manejo de excepciones si es necesario
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/usuario/{idCuenta}")
+    public ResponseEntity<UsuarioDTO> obtenerUsuarioPorIdCuenta(@PathVariable Integer idCuenta) {
+        try {
+            UsuarioDTO usuarioDTO = cuentaService.obtenerUsuarioPorIdCuenta(idCuenta);
+            return ResponseEntity.ok(usuarioDTO);
         } catch (Exception e) {
             // Manejo de excepciones si es necesario
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
